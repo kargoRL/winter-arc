@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winter Arc</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjM2ZhOWY1Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjN2M1Y2ZmIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyNCIgZmlsbD0idXJsKCNnKSIvPjx0ZXh0IHg9IjUwIiB5PSI2NiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+V0E8L3RleHQ+PC9zdmc+Cg==">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjM2ZhOWY1Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjN2M1Y2ZmIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyNCIgZmlsbD0idXJsKCNnKSIvPjx0ZXh0IHg9IjUwIiB5PSI2NiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+V0E8L3RleHQ+PC9zdmc+Cg==">
+<meta name="theme-color" content="#0b0e13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Winter Arc">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  :root {
+    --bg: #0b0e13; --text: #eceef1; --muted: #8b93a1; --card-bg: #12151c; --border: #232935;
+    --accent: #3fa9f5; --accent2: #7c5cff; --good: #2fbf71; --bad: #ff6b6b;
+    --card-bg-done: #10201a; --border-done: #1f4d38; --card-bg-skip: #1c1216; --border-skip: #4a2530;
+    --input-bg: #171b22;
+  }
+  body.light {
+    --bg: #f5f4f0; --text: #23241f; --muted: #6f6e68; --card-bg: #ffffff; --border: #e2e0d6;
+    --card-bg-done: #eef7f0; --border-done: #b9dcc4; --card-bg-skip: #fbeceb; --border-skip: #e7b9bc;
+    --input-bg: #f9f8f4;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 16px 16px 90px; position: relative; transition: background 0.25s ease, color 0.25s ease; }
+  .wrap { max-width: 480px; margin: 0 auto; }
+
+  .tabbar { display: flex; gap: 6px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 4px; margin-bottom: 16px; position: sticky; top: 8px; z-index: 15; }
+  .tab-btn { flex: 1; padding: 9px 0; border: none; background: transparent; color: var(--muted); font-size: 13px; font-weight: 600; border-radius: 10px; cursor: pointer; }
+  .tab-btn.active { background: var(--accent); color: #06131c; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 10px; }
+  .header-row h1 { font-size: 21px; font-weight: 700; margin: 0 0 2px; }
+  .header-row p { font-size: 13px; color: var(--muted); margin: 0; }
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+  .clock-box { text-align: right; }
+  .clock-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .clock-time { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; background: var(--card-bg); border: 1px solid var(--border); padding: 4px 9px; border-radius: 10px; white-space: nowrap; }
+  .theme-btn { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); font-size: 13px; cursor: pointer; }
+
+  .why-banner { background: var(--card-bg); border: 1px dashed var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 14px; font-size: 12.5px; color: var(--muted); font-style: italic; cursor: pointer; }
+  .why-banner b { color: var(--text); font-style: normal; font-weight: 600; }
+  .why-edit { display: none; margin-bottom: 14px; }
+  .why-edit.show { display: block; }
+  .why-edit textarea { width: 100%; min-height: 50px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); padding: 8px 10px; font-size: 13px; font-family: inherit; resize: vertical; }
+  .why-edit button { margin-top: 6px; height: 32px; padding: 0 14px; border-radius: 8px; border: none; background: var(--accent); color: #06131c; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+
+  .week-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .week-nav .wk-title { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .week-nav button { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); font-size: 14px; cursor: pointer; }
+  .week-nav button:disabled { opacity: 0.35; cursor: default; }
+
+  .day-tabs { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 12px; margin-bottom: 6px; }
+  .day-tabs::-webkit-scrollbar { display: none; }
+  .day-tab { flex: 0 0 auto; width: 54px; padding: 9px 0 7px; border-radius: 14px; border: 1px solid var(--border); background: var(--card-bg); color: var(--muted); text-align: center; cursor: pointer; }
+  .day-tab .dow { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 4px; }
+  .day-tab .num { font-size: 16px; font-weight: 700; color: var(--text); display: block; }
+  .day-tab .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--good); margin: 5px auto 0; visibility: hidden; }
+  .day-tab.done .dot { visibility: visible; }
+  .day-tab.selected { border-color: var(--accent); background: rgba(63,169,245,0.12); }
+  .day-tab.selected .dow { color: var(--accent); }
+  .day-tab.frozen { border-color: #6bb8e0; }
+
+  .hero { display: flex; align-items: center; gap: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 14px; }
+  .hero.complete { border-color: var(--good); }
+  .ring-wrap { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+  .ring-wrap svg { transform: rotate(-90deg); width: 76px; height: 76px; }
+  .ring-track { fill: none; stroke: var(--border); stroke-width: 8; }
+  .ring-fill { fill: none; stroke: url(#ringGradient); stroke-width: 8; stroke-linecap: round; }
+  .ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 15px; font-weight: 700; }
+  .hero-text { flex: 1; min-width: 0; }
+  .hero-text .count { font-size: 13.5px; color: var(--muted); margin: 0 0 4px; }
+  .hero-text .quote { font-size: 13px; color: var(--text); margin: 0; line-height: 1.4; font-style: italic; opacity: 0.85; }
+  .hero-text .quote .author { display: block; margin-top: 4px; font-size: 11.5px; color: var(--muted); font-style: normal; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+  .stat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 11px 13px; }
+  .stat-label { font-size: 10.5px; color: var(--muted); margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 19px; font-weight: 700; margin: 0; }
+
+  .freeze-row { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px 13px; margin-bottom: 14px; font-size: 12.5px; }
+  .freeze-row button { height: 30px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--accent); background: transparent; color: var(--accent); font-size: 12px; font-weight: 700; cursor: pointer; }
+  .freeze-row button:disabled { opacity: 0.4; border-color: var(--border); color: var(--muted); cursor: default; }
+
+  .goal-row { display: flex; align-items: center; gap: 8px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px 13px; margin-bottom: 14px; font-size: 12.5px; }
+  .goal-row input { width: 56px; height: 30px; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); text-align: center; font-size: 13px; }
+  .goal-row button { height: 30px; padding: 0 12px; border-radius: 8px; border: none; background: var(--accent2); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
+
+  .section-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin: 18px 0 8px 2px; }
+  .section-title .sub-toggle { float: right; font-size: 11px; text-transform: none; letter-spacing: 0; }
+  .toggle-pill { display: inline-flex; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+  .toggle-pill button { border: none; background: transparent; color: var(--muted); font-size: 11px; padding: 3px 10px; cursor: pointer; }
+  .toggle-pill button.active { background: var(--accent); color: #06131c; }
+
+  .chart-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 14px 10px 10px; margin-bottom: 14px; }
+  .chart-card .chart-title-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0 8px; margin-bottom: 4px; }
+  .chart-card .chart-title-row .t { font-size: 13px; font-weight: 600; }
+  .chart-card .chart-title-row .s { font-size: 11px; color: var(--muted); }
+  #week-chart-wrap { width: 100%; }
+  .chart-legend { display: flex; gap: 16px; justify-content: center; margin-top: 4px; }
+  .chart-legend .item { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--muted); }
+  .chart-legend .swatch { width: 8px; height: 8px; border-radius: 50%; }
+
+  .insight-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 13px; margin-bottom: 14px; font-size: 12.5px; }
+  .insight-row { display: flex; justify-content: space-between; padding: 5px 0; }
+  .insight-row .k { color: var(--muted); }
+  .insight-row .v { font-weight: 600; }
+  .insight-row .v.up { color: var(--good); }
+  .insight-row .v.down { color: var(--bad); }
+
+  .mood-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 13px; margin-bottom: 14px; }
+  .mood-card .label { font-size: 12.5px; color: var(--muted); margin: 0 0 9px; }
+  .mood-row { display: flex; justify-content: space-between; gap: 6px; }
+  .mood-btn { flex: 1; font-size: 20px; padding: 7px 0; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); cursor: pointer; }
+  .mood-btn.selected { border-color: var(--accent); background: rgba(63,169,245,0.12); }
+
+  .task-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 11px 13px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .task-card.done { background: var(--card-bg-done); border-color: var(--border-done); }
+  .task-card.skipped { background: var(--card-bg-skip); border-color: var(--border-skip); }
+  @keyframes nextPulse { 0%, 100% { border-color: var(--accent); box-shadow: 0 0 0 0 rgba(63,169,245,0.35); } 50% { border-color: var(--accent2); box-shadow: 0 0 0 5px rgba(124,92,255,0); } }
+  .task-card.next-highlight { animation: nextPulse 1s ease-in-out 2; }
+  .choice-btns { display: flex; gap: 4px; flex-shrink: 0; }
+  .choice-btn { width: 29px; height: 29px; border-radius: 9px; border: 1px solid var(--border); background: transparent; font-size: 12px; font-weight: 700; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .choice-btn.yes.active { background: var(--good); border-color: var(--good); color: #06130c; }
+  .choice-btn.no.active { background: var(--bad); border-color: var(--bad); color: #1a0505; }
+  .task-body { flex: 1; min-width: 0; }
+  .task-name { font-size: 13.5px; font-weight: 500; margin: 0 0 2px; word-break: break-word; }
+  .task-card.done .task-name { text-decoration: line-through; opacity: 0.6; }
+  .task-meta { font-size: 10.5px; color: var(--muted); margin: 0; }
+  .task-side-btns { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+  .mini-btn { background: none; border: none; color: var(--muted); font-size: 10px; cursor: pointer; padding: 1px 4px; line-height: 1; }
+  .icon-btn { background: none; border: none; color: var(--muted); font-size: 14px; cursor: pointer; padding: 4px; flex-shrink: 0; }
+  .edit-form { display: flex; gap: 6px; flex: 1; min-width: 0; }
+  .edit-form input, .edit-form select { height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 13px; padding: 0 8px; }
+  .edit-form input { flex: 1; min-width: 0; }
+  .edit-form select { width: 92px; }
+  .edit-form button { height: 32px; padding: 0 10px; border-radius: 8px; border: none; background: var(--accent); color: #06131c; font-size: 12px; font-weight: 700; cursor: pointer; }
+  .empty-slot { font-size: 12px; color: var(--muted); padding: 6px 2px 12px; font-style: italic; opacity: 0.7; }
+
+  .add-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .add-row input, .add-row select, .add-row textarea { height: 40px; border-radius: 10px; border: 1px solid var(--border); padding: 0 10px; font-size: 14px; background: var(--input-bg); color: var(--text); }
+  .add-row input { flex: 1; min-width: 120px; }
+  .add-row select { width: 118px; }
+  .add-row button { height: 40px; padding: 0 16px; border-radius: 10px; border: none; background: var(--accent); color: #06131c; font-size: 14px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+
+  .summary-card, .reflection-card, .backup-card, .focus-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-top: 16px; }
+  .summary-card h2, .reflection-card h2, .backup-card h2, .focus-card h2 { font-size: 15px; font-weight: 700; margin: 0 0 8px; }
+  .summary-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .k { color: var(--muted); }
+  .summary-row .v { font-weight: 600; }
+  .summary-pending { font-size: 13px; color: var(--muted); font-style: italic; }
+  .share-btn, .backup-btn { margin-top: 10px; height: 38px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; }
+  .reflection-card .sub { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+  .reflection-card textarea, .backup-card textarea { width: 100%; min-height: 80px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); padding: 10px; font-size: 13.5px; font-family: inherit; resize: vertical; }
+  .reflection-card .save-btn { margin-top: 10px; height: 40px; padding: 0 18px; border-radius: 10px; border: none; background: var(--accent2); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .saved-note { font-size: 12px; color: var(--good); margin-top: 8px; display: none; }
+  .saved-note.show { display: block; }
+
+  .focus-timer-display { font-size: 40px; font-weight: 700; text-align: center; margin: 8px 0; font-variant-numeric: tabular-nums; }
+  .focus-controls { display: flex; gap: 8px; justify-content: center; }
+  .focus-controls button { height: 38px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer; }
+  .focus-controls button.primary { background: var(--accent); color: #06131c; border: none; }
+  .focus-mode-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 6px; }
+  .focus-mode-row button { font-size: 11.5px; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; }
+  .focus-mode-row button.active { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+
+  .error { color: var(--bad); font-size: 12.5px; margin: 6px 0 0; }
+  .reset-row { text-align: center; margin-top: 20px; }
+  .reset-row button { background: none; border: 1px solid var(--border); color: var(--muted); font-size: 12px; padding: 8px 14px; border-radius: 20px; cursor: pointer; }
+  .loading { text-align: center; color: var(--muted); padding: 40px 0; font-size: 14px; }
+
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #1a1f28; border: 1px solid #2c3340; color: #eceef1; font-size: 13px; padding: 10px 18px; border-radius: 30px; z-index: 20; white-space: nowrap; }
+  .nudge { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #16253a; border: 1px solid #3fa9f5; color: #eceef1; font-size: 13px; padding: 10px 16px; border-radius: 30px; z-index: 20; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+  .nudge .arrow { display: inline-block; font-size: 15px; }
+  .celebrate-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 40; pointer-events: none; }
+  .celebrate-card { background: #12151c; border: 1px solid #2c3340; border-radius: 20px; padding: 26px 30px; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.5); max-width: 300px; }
+  .celebrate-emoji { font-size: 40px; margin-bottom: 10px; }
+  .celebrate-text { font-size: 15px; font-weight: 600; color: #eceef1; line-height: 1.4; }
+  #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 30; }
+
+  /* Content page */
+  .video-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 13px; margin-bottom: 10px; }
+  .video-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .video-title { font-size: 14.5px; font-weight: 600; margin: 0 0 4px; }
+  .video-status { display: inline-block; font-size: 10.5px; padding: 3px 9px; border-radius: 20px; font-weight: 600; }
+  .video-status.idea { background: rgba(139,147,161,0.2); color: var(--muted); }
+  .video-status.scripted { background: rgba(63,169,245,0.18); color: var(--accent); }
+  .video-status.edited { background: rgba(124,92,255,0.18); color: var(--accent2); }
+  .video-status.uploaded { background: rgba(47,191,113,0.18); color: var(--good); }
+  .video-thumb-note { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
+  .video-script { font-size: 13px; color: var(--text); margin: 8px 0 0; white-space: pre-wrap; background: var(--input-bg); border-radius: 8px; padding: 8px 10px; display: none; }
+  .video-script.show { display: block; }
+  .video-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .video-actions button { font-size: 11.5px; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); cursor: pointer; }
+  .add-video-form { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 13px; margin-top: 10px; }
+  .add-video-form input, .add-video-form select, .add-video-form textarea { width: 100%; margin-bottom: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); padding: 8px 10px; font-size: 13.5px; font-family: inherit; }
+  .add-video-form textarea { min-height: 70px; resize: vertical; }
+  .add-video-form button { height: 38px; padding: 0 16px; border-radius: 8px; border: none; background: var(--accent); color: #06131c; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%; }
+
+  /* Study page */
+  .subject-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
+  .subject-head { display: flex; justify-content: space-between; align-items: center; padding: 13px; cursor: pointer; }
+  .subject-name { font-size: 14.5px; font-weight: 600; }
+  .subject-progress-bar { height: 5px; background: var(--border); border-radius: 4px; margin-top: 6px; width: 100%; overflow: hidden; }
+  .subject-progress-fill { height: 100%; background: var(--good); border-radius: 4px; }
+  .subject-pct { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .subject-body { display: none; padding: 0 13px 13px; }
+  .subject-body.open { display: block; }
+  .chapter-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--border); }
+  .chapter-row:first-child { border-top: none; }
+  .chapter-name { flex: 1; font-size: 13px; min-width: 0; word-break: break-word; }
+  .color-dots { display: flex; gap: 5px; flex-shrink: 0; }
+  .color-dot { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); cursor: pointer; opacity: 0.35; }
+  .color-dot.red { background: #ff6b6b; }
+  .color-dot.yellow { background: #ffd166; }
+  .color-dot.blue { background: #3fa9f5; }
+  .color-dot.green { background: #2fbf71; }
+  .color-dot.on { opacity: 1; border-color: var(--text); }
+  .del-chapter { background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; flex-shrink: 0; }
+  .add-chapter-row { display: flex; gap: 6px; margin-top: 8px; }
+  .add-chapter-row input { flex: 1; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); padding: 0 8px; font-size: 13px; }
+  .add-chapter-row button { height: 34px; padding: 0 12px; border-radius: 8px; border: none; background: var(--accent); color: #06131c; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+  .color-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 10.5px; color: var(--muted); margin-bottom: 12px; }
+  .color-legend span { display: inline-flex; align-items: center; gap: 4px; }
+  .color-legend .sw { width: 9px; height: 9px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div class="wrap">
+
+  <div class="tabbar">
+    <button class="tab-btn active" data-page="home">Home</button>
+    <button class="tab-btn" data-page="content">Content</button>
+    <button class="tab-btn" data-page="study">Study</button>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="header-row">
+      <div>
+        <h1>Winter arc</h1>
+        <p id="date-label">Loading...</p>
+      </div>
+      <div class="header-right">
+        <button class="theme-btn" id="theme-btn" title="Toggle theme">🌙</button>
+        <div class="clock-box">
+          <div class="clock-label">India</div>
+          <div class="clock-time" id="ist-clock">--:--:--</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-banner" id="why-banner">Tap to set your "why" for this winter arc.</div>
+    <div class="why-edit" id="why-edit">
+      <textarea id="why-input" placeholder="Why are you doing this? e.g. To build discipline and grow my channel before college starts."></textarea>
+      <button id="why-save-btn">Save</button>
+    </div>
+
+    <div class="week-nav">
+      <button id="prev-week-btn">&#8592;</button>
+      <span class="wk-title" id="week-title">Week 1</span>
+      <button id="next-week-btn">&#8594;</button>
+    </div>
+
+    <div class="day-tabs" id="day-tabs"></div>
+
+    <div class="hero" id="hero-card">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 84 84">
+          <defs>
+            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#3fa9f5" />
+              <stop offset="100%" stop-color="#7c5cff" />
+            </linearGradient>
+          </defs>
+          <circle class="ring-track" cx="42" cy="42" r="36"></circle>
+          <circle class="ring-fill" id="ring-fill" cx="42" cy="42" r="36" stroke-dasharray="226.19" stroke-dashoffset="226.19"></circle>
+        </svg>
+        <div class="ring-label" id="ring-label">0%</div>
+      </div>
+      <div class="hero-text">
+        <p class="count" id="progress-count">0 / 0 done</p>
+        <p class="quote" id="quote-label">Let's get to work.<span class="author" id="quote-author"></span></p>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><p class="stat-label">Day streak</p><p class="stat-value" id="stat-daystreak">0</p></div>
+      <div class="stat-card"><p class="stat-label">Best streak</p><p class="stat-value" id="stat-best">0</p></div>
+    </div>
+
+    <div class="freeze-row">
+      <span id="freeze-label">Streak freeze: 1 available this week</span>
+      <button id="freeze-btn">Use freeze</button>
+    </div>
+
+    <div class="goal-row">
+      <span>Weekly goal:</span>
+      <input type="number" id="goal-input" min="0" max="100" placeholder="80">
+      <span>%</span>
+      <button id="goal-save-btn">Set</button>
+    </div>
+
+    <div class="section-title">
+      Your growth
+      <span class="sub-toggle">
+        <span class="toggle-pill" id="range-toggle">
+          <button data-range="week" class="active">Week</button>
+          <button data-range="month">Month</button>
+        </span>
+      </span>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title-row"><span class="t" id="chart-title-text">Completion trend</span><span class="s">% of tasks done per day</span></div>
+      <div id="week-chart-wrap"></div>
+      <div class="chart-legend">
+        <span class="item"><span class="swatch" style="background:#2fbf71;"></span>Full day</span>
+        <span class="item"><span class="swatch" style="background:#3fa9f5;"></span>Partial</span>
+        <span class="item"><span class="swatch" style="background:#3a4150;"></span>None</span>
+      </div>
+    </div>
+
+    <div class="insight-card" id="insight-card"></div>
+
+    <div class="mood-card">
+      <p class="label" id="mood-label">How did this day feel?</p>
+      <div class="mood-row" id="mood-row"></div>
+    </div>
+
+    <div id="sections"></div>
+
+    <div class="section-title">Add a task</div>
+    <div class="add-row">
+      <input id="new-task-input" type="text" placeholder="e.g. Brush teeth" maxlength="60" />
+      <select id="new-task-cat">
+        <option value="morning">Morning</option>
+        <option value="afternoon">Afternoon</option>
+        <option value="evening">Evening</option>
+        <option value="night">Night</option>
+      </select>
+      <button id="add-btn">Add</button>
+    </div>
+    <div id="error" class="error" style="display:none;"></div>
+
+    <div class="focus-card">
+      <h2>Focus timer</h2>
+      <div class="focus-mode-row">
+        <button data-min="25" class="active">Study 25</button>
+        <button data-min="45">Deep 45</button>
+        <button data-min="5">Break 5</button>
+      </div>
+      <div class="focus-timer-display" id="focus-display">25:00</div>
+      <div class="focus-controls">
+        <button class="primary" id="focus-start-btn">Start</button>
+        <button id="focus-reset-btn">Reset</button>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <h2>Week summary</h2>
+      <div id="summary-body"></div>
+    </div>
+
+    <div class="reflection-card">
+      <h2>How did your week go?</h2>
+      <p class="sub">Write it once, anytime — you can update it as the week goes on.</p>
+      <div class="mood-row" id="week-mood-row" style="margin-bottom: 10px;"></div>
+      <textarea id="week-text" placeholder="Energy, wins, what was hard, what you'll change next week..."></textarea>
+      <button class="save-btn" id="save-reflection-btn">Save reflection</button>
+      <p class="saved-note" id="saved-note">Saved.</p>
+    </div>
+
+    <div class="backup-card">
+      <h2>Backup &amp; restore</h2>
+      <p class="sub" style="font-size:12px;color:var(--muted);margin:0 0 10px;">Export everything as text, or paste a previous export back in.</p>
+      <button class="backup-btn" id="export-btn">Export all data</button>
+      <textarea id="import-text" placeholder="Paste exported data here to restore..." style="margin-top:10px;"></textarea>
+      <button class="backup-btn" id="import-btn" style="margin-top:8px;">Restore from pasted data</button>
+    </div>
+
+    <div class="reset-row"><button id="reset-btn">Reset to default routine</button></div>
+  </div>
+
+  <!-- CONTENT PAGE -->
+  <div class="page" id="page-content">
+    <div class="header-row"><div><h1>Content</h1><p>Scripts, thumbnails, and your upload streak</p></div></div>
+
+    <div class="stats-row">
+      <div class="stat-card"><p class="stat-label">Upload streak</p><p class="stat-value" id="upload-streak">0</p></div>
+      <div class="stat-card"><p class="stat-label">Total uploaded</p><p class="stat-value" id="upload-total">0</p></div>
+    </div>
+
+    <div class="section-title">Your videos</div>
+    <div id="video-list"></div>
+
+    <div class="add-video-form">
+      <input id="video-title-input" type="text" placeholder="Video title / idea" maxlength="100" />
+      <select id="video-status-input">
+        <option value="idea">Idea</option>
+        <option value="scripted">Scripted</option>
+        <option value="edited">Edited</option>
+        <option value="uploaded">Uploaded</option>
+      </select>
+      <input id="video-thumb-input" type="text" placeholder="Thumbnail note (e.g. red bg, shocked face, big text 'DAY 1')" maxlength="150" />
+      <textarea id="video-script-input" placeholder="Write your script here..."></textarea>
+      <button id="add-video-btn">Add video</button>
+    </div>
+  </div>
+
+  <!-- STUDY PAGE -->
+  <div class="page" id="page-study">
+    <div class="header-row"><div><h1>Study</h1><p>Track every chapter, subject by subject</p></div></div>
+    <div class="color-legend">
+      <span><span class="sw" style="background:#ff6b6b;"></span>Read</span>
+      <span><span class="sw" style="background:#ffd166;"></span>Notes made</span>
+      <span><span class="sw" style="background:#3fa9f5;"></span>Revised</span>
+      <span><span class="sw" style="background:#2fbf71;"></span>Fully done</span>
+    </div>
+    <div id="subject-list"></div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var STORAGE_KEY = 'winter-arc-v5';
+  var state = {
+    tasks: [], dayLog: {}, dayMood: {}, weekReflections: {}, theme: 'dark',
+    why: '', weekGoals: {}, streakFreezes: {},
+    content: { videos: [] },
+    study: { subjects: {} }
+  };
+  var loaded = false;
+  var RING_CIRC = 226.19;
+  var MOODS = ['😩', '😕', '😐', '🙂', '😄'];
+  var chartRange = 'week';
+  var openSubject = null;
+
+  var WEEK_START_DATE = '2026-09-03';
+  var selectedWeekIndex = 0;
+  var selectedDate = WEEK_START_DATE;
+  var editingTaskId = null;
+
+  var CATEGORY_LABELS = { morning: '🌅 Morning', afternoon: '☀️ Afternoon', evening: '🌇 Evening', night: '🌙 Night' };
+  var CATEGORY_ORDER = ['morning', 'afternoon', 'evening', 'night'];
+  var OLD_CATEGORY_MIGRATION = { morning: 'morning', fitness: 'evening', content: 'afternoon', study: 'afternoon' };
+
+  var SUBJECT_LIST = ['Science', 'Maths', 'Geography', 'History', 'Civics', 'Economics', 'Sanskrit', 'Hindi', 'English'];
+
+  var QUOTES = [
+    { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+    { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+    { text: "Discipline is the bridge between goals and accomplishment.", author: "Jim Rohn" },
+    { text: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky" },
+    { text: "The successful warrior is the average man with laser-like focus.", author: "Bruce Lee" },
+    { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
+    { text: "Well done is better than well said.", author: "Benjamin Franklin" },
+    { text: "Arise, awake, and stop not till the goal is reached.", author: "Swami Vivekananda" },
+    { text: "Dream is not that which you see while sleeping, it is something that does not let you sleep.", author: "A. P. J. Abdul Kalam" }
+  ];
+
+  var DEFAULT_TASKS = [
+    { name: 'Wake up at 4 AM', category: 'morning' },
+    { name: 'Drink 1 litre of water', category: 'morning' },
+    { name: 'Take a cold bath', category: 'morning' },
+    { name: 'Go for a run', category: 'morning' },
+    { name: 'Study', category: 'afternoon' },
+    { name: 'Edit video', category: 'afternoon' },
+    { name: 'Workout', category: 'evening' },
+    { name: 'Upload content', category: 'evening' }
+  ];
+
+  var CELEBRATIONS = {
+    'wake up at 4 am': { emoji: '🔥', text: 'Whoa! You woke up! Congratulations!' },
+    'drink 1 litre of water': { emoji: '💧', text: 'Hydration secured. Great start.' },
+    'take a cold bath': { emoji: '🥶', text: 'Cold bath done. You are built different.' },
+    'go for a run': { emoji: '🏃', text: 'Run complete. Legs of steel.' },
+    'workout': { emoji: '💪', text: 'Workout crushed.' },
+    'edit video': { emoji: '🎬', text: 'Video edited. Content machine.' },
+    'upload content': { emoji: '🚀', text: 'Uploaded. The world sees you now.' },
+    'study': { emoji: '📚', text: 'Study session done. Big brain gains.' },
+    'brush teeth': { emoji: '🦷', text: 'Teeth brushed. Small habit, still counts.' }
+  };
+
+  function getCelebration(name) {
+    var key = name.trim().toLowerCase();
+    return CELEBRATIONS[key] || { emoji: '✅', text: name + ' done. Keep going.' };
+  }
+
+  function parseDate(dateStr) { var p = dateStr.split('-'); return new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2])); }
+  function toDateStr(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  function addDays(dateStr, n) { var d = parseDate(dateStr); d.setDate(d.getDate() + n); return toDateStr(d); }
+  function dowShort(dateStr) { return parseDate(dateStr).toLocaleDateString(undefined, { weekday: 'short' }); }
+  function dayNum(dateStr) { return parseDate(dateStr).getDate(); }
+  function fullDateLabel(dateStr) { return parseDate(dateStr).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }); }
+  function todayRealStr() { return toDateStr(new Date()); }
+
+  function getWeekDates(weekIndex) {
+    var start = addDays(WEEK_START_DATE, weekIndex * 7);
+    var dates = [];
+    for (var i = 0; i < 7; i++) dates.push(addDays(start, i));
+    return dates;
+  }
+  function currentRealWeekIndex() {
+    var diffDays = Math.floor((parseDate(todayRealStr()) - parseDate(WEEK_START_DATE)) / 86400000);
+    return Math.max(0, Math.floor(diffDays / 7));
+  }
+  function currentWeekKey() { return getWeekDates(selectedWeekIndex)[0]; }
+
+  function updateClock() {
+    var el = document.getElementById('ist-clock');
+    if (!el) return;
+    el.textContent = new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  function showError(msg) {
+    var el = document.getElementById('error');
+    el.textContent = msg;
+    el.style.display = msg ? 'block' : 'none';
+  }
+
+  function showToast(msg) {
+    var existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    var t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    t.animate([{ opacity: 0, transform: 'translate(-50%, 10px)' }, { opacity: 1, transform: 'translate(-50%, 0)' }], { duration: 220, easing: 'ease-out' });
+    setTimeout(function() {
+      var anim = t.animate([{ opacity: 1, transform: 'translate(-50%, 0)' }, { opacity: 0, transform: 'translate(-50%, -10px)' }], { duration: 220, easing: 'ease-in' });
+      anim.onfinish = function() { t.remove(); };
+    }, 1500);
+  }
+
+  function showNudge(msg) {
+    var existing = document.querySelector('.nudge');
+    if (existing) existing.remove();
+    var n = document.createElement('div');
+    n.className = 'nudge';
+    n.innerHTML = '<span>' + msg + '</span><span class="arrow">→</span>';
+    document.body.appendChild(n);
+    var arrow = n.querySelector('.arrow');
+    n.animate([{ opacity: 0, transform: 'translate(-50%, 10px)' }, { opacity: 1, transform: 'translate(-50%, 0)' }], { duration: 220, easing: 'ease-out' });
+    arrow.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(5px)' }, { transform: 'translateX(0)' }], { duration: 700, iterations: 3 });
+    setTimeout(function() {
+      var anim = n.animate([{ opacity: 1, transform: 'translate(-50%, 0)' }, { opacity: 0, transform: 'translate(-50%, -10px)' }], { duration: 220, easing: 'ease-in' });
+      anim.onfinish = function() { n.remove(); };
+    }, 2400);
+  }
+
+  function showCelebration(emoji, text) {
+    var backdrop = document.createElement('div');
+    backdrop.className = 'celebrate-backdrop';
+    backdrop.innerHTML = '<div class="celebrate-card"><div class="celebrate-emoji">' + emoji + '</div><div class="celebrate-text">' + text + '</div></div>';
+    document.body.appendChild(backdrop);
+    var card = backdrop.querySelector('.celebrate-card');
+    card.animate([{ opacity: 0, transform: 'scale(0.6)' }, { opacity: 1, transform: 'scale(1.06)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 380, easing: 'cubic-bezier(.34,1.56,.64,1)' });
+    setTimeout(function() {
+      var anim = card.animate([{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0.85)' }], { duration: 260, easing: 'ease-in' });
+      anim.onfinish = function() { backdrop.remove(); };
+    }, 1100);
+  }
+
+  function playChime() {
+    try {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      var ctx = new Ctx();
+      [523.25, 659.25, 783.99].forEach(function(freq, i) {
+        var osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.value = freq;
+        var startAt = ctx.currentTime + i * 0.12;
+        gain.gain.setValueAtTime(0, startAt);
+        gain.gain.linearRampToValueAtTime(0.15, startAt + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, startAt + 0.35);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(startAt); osc.stop(startAt + 0.4);
+      });
+    } catch (e) {}
+  }
+
+  function playBeep() {
+    try {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      var ctx = new Ctx();
+      var osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = 'sine'; osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + 0.5);
+    } catch (e) {}
+  }
+
+  function makeDefaultTasks() {
+    return DEFAULT_TASKS.map(function(t, i) { return { id: 't' + i + '-' + Date.now(), name: t.name, category: t.category, order: i }; });
+  }
+  function makeDefaultSubjects() {
+    var obj = {};
+    SUBJECT_LIST.forEach(function(s) { obj[s] = { chapters: [] }; });
+    return obj;
+  }
+
+  function getFlatOrder() {
+    var flat = [];
+    CATEGORY_ORDER.forEach(function(cat) {
+      state.tasks.filter(function(t) { return t.category === cat; }).sort(function(a,b){ return (a.order||0)-(b.order||0); }).forEach(function(t) { flat.push(t); });
+    });
+    return flat;
+  }
+  function getStatus(dateStr, taskId) { return (state.dayLog[dateStr] && state.dayLog[dateStr][taskId]) || null; }
+  function getNextUnanswered(afterTaskId) {
+    var flat = getFlatOrder();
+    var idx = flat.findIndex(function(t) { return t.id === afterTaskId; });
+    for (var i = idx + 1; i < flat.length; i++) if (!getStatus(selectedDate, flat[i].id)) return flat[i];
+    return null;
+  }
+
+  async function loadState() {
+    document.getElementById('sections').innerHTML = '<div class="loading">Loading your week…</div>';
+    var needsResave = false;
+    try {
+      var result = await window.storage.get(STORAGE_KEY, false);
+      if (result && result.value) {
+        var parsed = JSON.parse(result.value);
+        state = {
+          tasks: parsed.tasks || makeDefaultTasks(),
+          dayLog: parsed.dayLog || {},
+          dayMood: parsed.dayMood || {},
+          weekReflections: parsed.weekReflections || {},
+          theme: parsed.theme || 'dark',
+          why: parsed.why || '',
+          weekGoals: parsed.weekGoals || {},
+          streakFreezes: parsed.streakFreezes || {},
+          content: parsed.content || { videos: [] },
+          study: parsed.study || { subjects: makeDefaultSubjects() }
+        };
+        if (!state.study.subjects) state.study.subjects = makeDefaultSubjects();
+        SUBJECT_LIST.forEach(function(s) { if (!state.study.subjects[s]) { state.study.subjects[s] = { chapters: [] }; needsResave = true; } });
+        state.tasks.forEach(function(t, i) {
+          if (CATEGORY_ORDER.indexOf(t.category) === -1) { t.category = OLD_CATEGORY_MIGRATION[t.category] || 'morning'; needsResave = true; }
+          if (typeof t.order !== 'number') { t.order = i; needsResave = true; }
+        });
+      } else {
+        var migrated = await migrateFromOlderVersions();
+        state = migrated.state;
+        needsResave = true;
+      }
+    } catch (e) {
+      state = { tasks: makeDefaultTasks(), dayLog: {}, dayMood: {}, weekReflections: {}, theme: 'dark', why: '', weekGoals: {}, streakFreezes: {}, content: { videos: [] }, study: { subjects: makeDefaultSubjects() } };
+      needsResave = true;
+    }
+    loaded = true;
+    if (needsResave) await saveState();
+
+    applyTheme();
+    var todayStr = todayRealStr();
+    selectedWeekIndex = currentRealWeekIndex();
+    var weekDates = getWeekDates(selectedWeekIndex);
+    selectedDate = weekDates.indexOf(todayStr) >= 0 ? todayStr : weekDates[0];
+
+    renderWhyBanner();
+    renderWeekReflectionUI();
+    renderWeekNav();
+    renderDayTabs();
+    renderMoodRow();
+    renderAll();
+    renderVideos();
+    renderSubjects();
+  }
+
+  async function migrateFromOlderVersions() {
+    try {
+      var v4 = await window.storage.get('winter-arc-v4', false).catch(function() { return null; });
+      if (v4 && v4.value) {
+        var p = JSON.parse(v4.value);
+        return { state: {
+          tasks: p.tasks || makeDefaultTasks(), dayLog: p.dayLog || {}, dayMood: p.dayMood || {},
+          weekReflections: p.weekReflections || {}, theme: p.theme || 'dark', why: '', weekGoals: {}, streakFreezes: {},
+          content: { videos: [] }, study: { subjects: makeDefaultSubjects() }
+        } };
+      }
+    } catch (e) {}
+    return { state: { tasks: makeDefaultTasks(), dayLog: {}, dayMood: {}, weekReflections: {}, theme: 'dark', why: '', weekGoals: {}, streakFreezes: {}, content: { videos: [] }, study: { subjects: makeDefaultSubjects() } } };
+  }
+
+  async function saveState() {
+    try {
+      var result = await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+      if (!result) showError('Could not save — your changes might not stick.');
+      else showError('');
+    } catch (e) {
+      showError('Could not save — your changes might not stick.');
+    }
+  }
+
+  function applyTheme() {
+    document.body.classList.toggle('light', state.theme === 'light');
+    document.getElementById('theme-btn').textContent = state.theme === 'light' ? '☀️' : '🌙';
+  }
+
+  function isFrozen(dateStr) { return !!(state.dayLog[dateStr] && state.dayLog[dateStr].__frozen__); }
+  function isFullDayDone(dateStr) {
+    if (isFrozen(dateStr)) return true;
+    if (!state.dayLog[dateStr]) return false;
+    if (state.tasks.length === 0) return false;
+    return state.tasks.every(function(t) { return state.dayLog[dateStr][t.id] === 'yes'; });
+  }
+  function computeDayPercent(dateStr) {
+    if (isFrozen(dateStr)) return 100;
+    var total = state.tasks.length;
+    if (total === 0) return 0;
+    var doneCount = state.dayLog[dateStr] ? Object.keys(state.dayLog[dateStr]).filter(function(id) { return state.dayLog[dateStr][id] === 'yes'; }).length : 0;
+    return Math.round((doneCount / total) * 100);
+  }
+  function computeDayStreak() {
+    var streak = 0, cursor = todayRealStr();
+    while (isFullDayDone(cursor)) { streak++; cursor = addDays(cursor, -1); }
+    return streak;
+  }
+  function computeBestStreak() {
+    var dates = Object.keys(state.dayLog).sort();
+    if (dates.length === 0) return computeDayStreak();
+    var best = 0, current = 0, prevDate = null;
+    dates.forEach(function(d) {
+      if (!isFullDayDone(d)) { current = 0; prevDate = null; return; }
+      if (prevDate && addDays(prevDate, 1) === d) current++; else current = 1;
+      if (current > best) best = current;
+      prevDate = d;
+    });
+    return Math.max(best, computeDayStreak());
+  }
+
+  function renderWhyBanner() {
+    var banner = document.getElementById('why-banner');
+    banner.innerHTML = state.why ? '<b>Why:</b> ' + state.why : 'Tap to set your "why" for this winter arc.';
+    document.getElementById('why-input').value = state.why || '';
+  }
+
+  function renderWeekNav() {
+    document.getElementById('week-title').textContent = 'Week ' + (selectedWeekIndex + 1);
+    document.getElementById('prev-week-btn').disabled = selectedWeekIndex <= 0;
+  }
+
+  function renderDayTabs() {
+    var weekDates = getWeekDates(selectedWeekIndex);
+    var wrap = document.getElementById('day-tabs');
+    wrap.innerHTML = '';
+    weekDates.forEach(function(d) {
+      var tab = document.createElement('div');
+      tab.className = 'day-tab' + (d === selectedDate ? ' selected' : '') + (isFullDayDone(d) ? ' done' : '') + (isFrozen(d) ? ' frozen' : '');
+      tab.innerHTML = '<span class="dow">' + dowShort(d) + '</span><span class="num">' + dayNum(d) + '</span><span class="dot"></span>';
+      tab.onclick = function() { selectedDate = d; renderDayTabs(); renderMoodRow(); renderAll(); };
+      wrap.appendChild(tab);
+    });
+  }
+
+  function renderMoodRow() {
+    var wrap = document.getElementById('mood-row');
+    wrap.innerHTML = '';
+    document.getElementById('mood-label').textContent = 'How did ' + fullDateLabel(selectedDate) + ' feel?';
+    var current = state.dayMood[selectedDate] || '';
+    MOODS.forEach(function(m) {
+      var btn = document.createElement('button');
+      btn.className = 'mood-btn' + (m === current ? ' selected' : '');
+      btn.textContent = m;
+      btn.onclick = function() {
+        state.dayMood[selectedDate] = (state.dayMood[selectedDate] === m) ? '' : m;
+        saveState(); renderMoodRow();
+        btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'ease-out' });
+      };
+      wrap.appendChild(btn);
+    });
+  }
+
+  function renderWeekReflectionUI() {
+    var key = currentWeekKey();
+    if (!state.weekReflections[key]) state.weekReflections[key] = { mood: '', text: '' };
+    document.getElementById('week-text').value = state.weekReflections[key].text || '';
+    document.getElementById('goal-input').value = state.weekGoals[key] || '';
+    renderWeekMoodRow();
+    renderFreezeRow();
+  }
+
+  function renderFreezeRow() {
+    var key = currentWeekKey();
+    var used = state.streakFreezes[key];
+    var label = document.getElementById('freeze-label');
+    var btn = document.getElementById('freeze-btn');
+    if (used) {
+      label.textContent = 'Streak freeze used for ' + fullDateLabel(used) + ' this week.';
+      btn.disabled = true; btn.textContent = 'Used';
+    } else {
+      label.textContent = 'Streak freeze: 1 available this week';
+      btn.disabled = false; btn.textContent = 'Use freeze';
+    }
+  }
+
+  function renderWeekMoodRow() {
+    var key = currentWeekKey();
+    var ref = state.weekReflections[key] || { mood: '', text: '' };
+    var wrap = document.getElementById('week-mood-row');
+    wrap.innerHTML = '';
+    MOODS.forEach(function(m) {
+      var btn = document.createElement('button');
+      btn.className = 'mood-btn' + (ref.mood === m ? ' selected' : '');
+      btn.textContent = m;
+      btn.onclick = function() {
+        ref.mood = (ref.mood === m) ? '' : m;
+        state.weekReflections[key] = ref;
+        renderWeekMoodRow();
+        btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'ease-out' });
+      };
+      wrap.appendChild(btn);
+    });
+  }
+
+  function renderSummary() {
+    var weekDates = getWeekDates(selectedWeekIndex);
+    var todayStr = todayRealStr();
+    var weekConcluded = todayStr > weekDates[6];
+    var body = document.getElementById('summary-body');
+    if (!weekConcluded) { body.innerHTML = '<p class="summary-pending">This will fill in automatically once the week ends.</p>'; return; }
+
+    var dayStats = weekDates.map(function(d) { return { date: d, pct: computeDayPercent(d) }; });
+    var best = dayStats.reduce(function(a, b) { return b.pct > a.pct ? b : a; });
+    var worst = dayStats.reduce(function(a, b) { return b.pct < a.pct ? b : a; });
+    var avg = Math.round(dayStats.reduce(function(s, d) { return s + d.pct; }, 0) / dayStats.length);
+    var fullDays = dayStats.filter(function(d) { return d.pct === 100; }).length;
+    var goal = state.weekGoals[currentWeekKey()];
+    var goalLine = goal ? '<div class="summary-row"><span class="k">Goal vs actual</span><span class="v">' + goal + '% target • ' + avg + '% actual ' + (avg >= goal ? '✅' : '⚠️') + '</span></div>' : '';
+
+    body.innerHTML =
+      '<div class="summary-row"><span class="k">Average completion</span><span class="v">' + avg + '%</span></div>' +
+      goalLine +
+      '<div class="summary-row"><span class="k">Full days</span><span class="v">' + fullDays + ' / 7</span></div>' +
+      '<div class="summary-row"><span class="k">Best day</span><span class="v">' + fullDateLabel(best.date) + ' (' + best.pct + '%)</span></div>' +
+      '<div class="summary-row"><span class="k">Toughest day</span><span class="v">' + fullDateLabel(worst.date) + ' (' + worst.pct + '%)</span></div>' +
+      '<button class="share-btn" id="share-btn">Copy week summary to share</button>';
+
+    document.getElementById('share-btn').onclick = function() {
+      var text = 'Winter Arc — Week ' + (selectedWeekIndex + 1) + '\n' + fullDateLabel(weekDates[0]) + ' to ' + fullDateLabel(weekDates[6]) + '\n' +
+        'Average completion: ' + avg + '%\nFull days: ' + fullDays + '/7\nBest day: ' + fullDateLabel(best.date) + ' (' + best.pct + '%)\nToughest day: ' + fullDateLabel(worst.date) + ' (' + worst.pct + '%)';
+      copyToClipboard(text);
+    };
+  }
+
+  function renderInsights() {
+    var weekDates = getWeekDates(selectedWeekIndex);
+    var prevWeekDates = getWeekDates(selectedWeekIndex - 1);
+    var thisAvg = Math.round(weekDates.reduce(function(s,d){return s+computeDayPercent(d);},0) / 7);
+    var prevAvg = selectedWeekIndex > 0 ? Math.round(prevWeekDates.reduce(function(s,d){return s+computeDayPercent(d);},0) / 7) : null;
+
+    var skipCounts = {};
+    Object.keys(state.dayLog).forEach(function(d) {
+      Object.keys(state.dayLog[d]).forEach(function(tid) {
+        if (state.dayLog[d][tid] === 'no') {
+          var task = state.tasks.find(function(t){return t.id===tid;});
+          var name = task ? task.name : null;
+          if (name) skipCounts[name] = (skipCounts[name]||0) + 1;
+        }
+      });
+    });
+    var mostSkipped = null, maxSkip = 0;
+    Object.keys(skipCounts).forEach(function(name) { if (skipCounts[name] > maxSkip) { maxSkip = skipCounts[name]; mostSkipped = name; } });
+
+    var card = document.getElementById('insight-card');
+    var rows = '';
+    if (prevAvg !== null) {
+      var delta = thisAvg - prevAvg;
+      var cls = delta > 0 ? 'up' : (delta < 0 ? 'down' : '');
+      var arrow = delta > 0 ? '▲' : (delta < 0 ? '▼' : '–');
+      rows += '<div class="insight-row"><span class="k">vs last week</span><span class="v ' + cls + '">' + arrow + ' ' + Math.abs(delta) + '% (' + prevAvg + '% → ' + thisAvg + '%)</span></div>';
+    }
+    if (mostSkipped) {
+      rows += '<div class="insight-row"><span class="k">Most skipped</span><span class="v">' + mostSkipped + ' (' + maxSkip + '×)</span></div>';
+    }
+    card.innerHTML = rows || '<div class="insight-row"><span class="k">Insights</span><span class="v">Keep logging — patterns show up after a few days.</span></div>';
+  }
+
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() { showToast('Copied. Paste it anywhere to share.'); }).catch(function() { fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); showToast('Copied. Paste it anywhere to share.'); }
+    catch (e) { showToast('Could not copy — select and copy manually.'); }
+    document.body.removeChild(ta);
+  }
+
+  function getChartDates() {
+    if (chartRange === 'week') return getWeekDates(selectedWeekIndex);
+    var dates = [];
+    var cursor = todayRealStr();
+    for (var i = 27; i >= 0; i--) dates.push(addDays(cursor, -i));
+    return dates;
+  }
+
+  function renderChart() {
+    var dates = getChartDates();
+    var w = 328, h = 150, padX = 18, padTop = 14, padBottom = 26;
+    var innerW = w - padX * 2, innerH = h - padTop - padBottom;
+    var n = dates.length;
+
+    var points = dates.map(function(d, i) {
+      var pct = computeDayPercent(d);
+      var x = padX + (innerW * i / (n - 1));
+      var y = padTop + innerH - (innerH * pct / 100);
+      return { x: x, y: y, pct: pct, date: d };
+    });
+
+    var linePath = points.map(function(p, i) { return (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' ');
+    var areaPath = linePath + ' L' + points[points.length-1].x.toFixed(1) + ',' + (padTop+innerH) + ' L' + points[0].x.toFixed(1) + ',' + (padTop+innerH) + ' Z';
+
+    var gridLines = '';
+    [0, 50, 100].forEach(function(v) {
+      var y = padTop + innerH - (innerH * v / 100);
+      gridLines += '<line x1="' + padX + '" y1="' + y + '" x2="' + (w - padX) + '" y2="' + y + '" stroke="#1c212b" stroke-width="1" opacity="0.5"/>';
+    });
+
+    var showEvery = chartRange === 'month' ? 4 : 1;
+    var dots = points.map(function(p, i) {
+      var color = p.pct === 100 ? '#2fbf71' : (p.pct === 0 ? '#3a4150' : '#3fa9f5');
+      var r = p.date === selectedDate ? 6 : (chartRange === 'month' ? 3 : 4.5);
+      return '<circle class="chart-dot" data-date="' + p.date + '" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="' + r + '" fill="' + color + '" stroke="var(--bg)" stroke-width="1.5"/>';
+    }).join('');
+
+    var labels = points.map(function(p, i) {
+      if (i % showEvery !== 0 && i !== points.length - 1) return '';
+      var weight = p.date === selectedDate ? '700' : '400';
+      var color = p.date === selectedDate ? '#3fa9f5' : '#8b93a1';
+      var label = chartRange === 'month' ? dayNum(p.date) : dowShort(p.date);
+      return '<text x="' + p.x.toFixed(1) + '" y="' + (h - 6) + '" text-anchor="middle" font-size="9.5" font-weight="' + weight + '" fill="' + color + '">' + label + '</text>';
+    }).join('');
+
+    var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" width="100%" height="' + h + '">' +
+      '<defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3fa9f5" stop-opacity="0.35"/><stop offset="100%" stop-color="#3fa9f5" stop-opacity="0"/></linearGradient></defs>' +
+      gridLines + '<path d="' + areaPath + '" fill="url(#areaGrad)" stroke="none" id="chart-area"/>' +
+      '<path d="' + linePath + '" fill="none" stroke="#3fa9f5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="chart-line"/>' + dots + labels + '</svg>';
+
+    var wrap = document.getElementById('week-chart-wrap');
+    wrap.innerHTML = svg;
+
+    var lineEl = document.getElementById('chart-line');
+    var len = lineEl.getTotalLength();
+    lineEl.style.strokeDasharray = len; lineEl.style.strokeDashoffset = len;
+    lineEl.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { duration: 600, easing: 'ease-out', fill: 'forwards' });
+    var areaEl = document.getElementById('chart-area');
+    areaEl.style.opacity = 0;
+    areaEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: 250, fill: 'forwards' });
+
+    wrap.querySelectorAll('.chart-dot').forEach(function(dot, i) {
+      dot.style.opacity = 0;
+      dot.animate([{ opacity: 0, transform: 'scale(0)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 200, delay: 250 + i * 15, fill: 'forwards' });
+      dot.style.cursor = 'pointer';
+      dot.addEventListener('click', function() {
+        var d = dot.getAttribute('data-date');
+        var diffWeeks = Math.floor((parseDate(d) - parseDate(WEEK_START_DATE)) / (86400000*7));
+        selectedWeekIndex = Math.max(0, diffWeeks);
+        selectedDate = d;
+        renderWeekNav(); renderDayTabs(); renderMoodRow(); renderWeekReflectionUI(); renderAll();
+      });
+    });
+
+    document.getElementById('chart-title-text').textContent = chartRange === 'month' ? 'Last 28 days' : 'Completion trend';
+  }
+
+  function setTaskStatus(task, status, cardEl, yesBtn, noBtn) {
+    var taskId = task.id;
+    if (!state.dayLog[selectedDate]) state.dayLog[selectedDate] = {};
+    var current = state.dayLog[selectedDate][taskId] || null;
+    var newStatus = current === status ? null : status;
+    if (newStatus) state.dayLog[selectedDate][taskId] = newStatus; else delete state.dayLog[selectedDate][taskId];
+    saveState();
+
+    cardEl.classList.toggle('done', newStatus === 'yes');
+    cardEl.classList.toggle('skipped', newStatus === 'no');
+    yesBtn.classList.toggle('active', newStatus === 'yes');
+    noBtn.classList.toggle('active', newStatus === 'no');
+    cardEl.querySelector('.task-meta').textContent = newStatus === 'yes' ? 'Done' : (newStatus === 'no' ? 'Skipped' : 'Not done yet');
+
+    var pressedBtn = status === 'yes' ? yesBtn : noBtn;
+    pressedBtn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'cubic-bezier(.34,1.56,.64,1)' });
+    cardEl.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.015)' }, { transform: 'scale(1)' }], { duration: 250, easing: 'ease-out' });
+
+    renderDayTabs();
+    updateHeroAndStats();
+
+    if (!newStatus) return;
+    if (newStatus === 'yes') {
+      var celeb = getCelebration(task.name);
+      showCelebration(celeb.emoji, celeb.text);
+      if (isFullDayDone(selectedDate)) {
+        setTimeout(function() { launchConfetti(); playChime(); showToast('Full day complete. That is the arc.'); }, 1200);
+        return;
+      }
+    } else {
+      showToast('No worries — get it tomorrow.');
+    }
+    var next = getNextUnanswered(taskId);
+    if (next) {
+      setTimeout(function() {
+        showNudge('Next up: ' + next.name);
+        var nextCard = document.querySelector('[data-task-id="' + next.id + '"]');
+        if (nextCard) { nextCard.classList.remove('next-highlight'); void nextCard.offsetWidth; nextCard.classList.add('next-highlight'); nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      }, newStatus === 'yes' ? 1250 : 900);
+    }
+  }
+
+  function deleteTask(taskId, cardEl) {
+    var anim = cardEl.animate([{ opacity: 1, transform: 'translateX(0)' }, { opacity: 0, transform: 'translateX(24px)' }], { duration: 220, easing: 'ease-in' });
+    anim.onfinish = function() { state.tasks = state.tasks.filter(function(t) { return t.id !== taskId; }); saveState(); renderAll(); };
+  }
+  function addTask(name, category) {
+    var maxOrder = state.tasks.filter(function(t){return t.category===category;}).reduce(function(m,t){return Math.max(m, t.order||0);}, -1);
+    state.tasks.push({ id: 't' + Date.now() + Math.random().toString(36).slice(2,7), name: name, category: category, order: maxOrder + 1 });
+    saveState(); renderAll();
+  }
+  function moveTask(taskId, direction) {
+    var task = state.tasks.find(function(t) { return t.id === taskId; });
+    if (!task) return;
+    var peers = state.tasks.filter(function(t) { return t.category === task.category; }).sort(function(a,b){ return (a.order||0)-(b.order||0); });
+    var idx = peers.findIndex(function(t) { return t.id === taskId; });
+    var swapIdx = idx + direction;
+    if (swapIdx < 0 || swapIdx >= peers.length) return;
+    var other = peers[swapIdx];
+    var tmp = task.order; task.order = other.order; other.order = tmp;
+    saveState(); renderAll();
+  }
+  function startEditTask(taskId) { editingTaskId = taskId; renderAll(); }
+  function saveEditTask(taskId, newName, newCategory) {
+    var task = state.tasks.find(function(t) { return t.id === taskId; });
+    if (!task) return;
+    var trimmed = newName.trim();
+    if (trimmed) task.name = trimmed;
+    task.category = newCategory;
+    editingTaskId = null;
+    saveState(); renderAll();
+  }
+
+  function updateHeroAndStats() {
+    var total = state.tasks.length;
+    var doneToday = state.dayLog[selectedDate] ? Object.keys(state.dayLog[selectedDate]).filter(function(id) { return state.dayLog[selectedDate][id] === 'yes'; }).length : 0;
+    var pct = total > 0 ? Math.round((doneToday/total)*100) : 0;
+
+    document.getElementById('date-label').textContent = fullDateLabel(selectedDate);
+    document.getElementById('progress-count').textContent = doneToday + ' / ' + total + ' done';
+    document.getElementById('ring-label').textContent = pct + '%';
+    var ringEl = document.getElementById('ring-fill');
+    var prevOffset = ringEl.style.strokeDashoffset || RING_CIRC;
+    var offset = RING_CIRC - (RING_CIRC * pct / 100);
+    ringEl.animate([{ strokeDashoffset: prevOffset }, { strokeDashoffset: offset }], { duration: 450, easing: 'ease-out', fill: 'forwards' });
+    ringEl.style.strokeDashoffset = offset;
+
+    document.getElementById('hero-card').classList.toggle('complete', total > 0 && doneToday === total);
+
+    var d = parseDate(selectedDate);
+    var q = QUOTES[d.getDate() % QUOTES.length];
+    document.getElementById('quote-label').childNodes[0].textContent = '"' + q.text + '"';
+    document.getElementById('quote-author').textContent = '— ' + q.author;
+
+    document.getElementById('stat-daystreak').textContent = computeDayStreak();
+    document.getElementById('stat-best').textContent = computeBestStreak();
+
+    renderChart();
+    renderSummary();
+    renderInsights();
+    renderWeekNav();
+    renderFreezeRow();
+  }
+
+  function renderAll() {
+    if (!loaded) return;
+    var sectionsEl = document.getElementById('sections');
+    sectionsEl.innerHTML = '';
+
+    CATEGORY_ORDER.forEach(function(cat) {
+      var tasksInCat = state.tasks.filter(function(t) { return t.category === cat; }).sort(function(a,b){ return (a.order||0)-(b.order||0); });
+      var titleEl = document.createElement('div');
+      titleEl.className = 'section-title';
+      titleEl.textContent = CATEGORY_LABELS[cat];
+      sectionsEl.appendChild(titleEl);
+
+      if (tasksInCat.length === 0) {
+        var empty = document.createElement('div');
+        empty.className = 'empty-slot';
+        empty.textContent = 'Nothing here yet — add something below.';
+        sectionsEl.appendChild(empty);
+        return;
+      }
+
+      tasksInCat.forEach(function(t, idxInCat) {
+        var card = document.createElement('div');
+        card.setAttribute('data-task-id', t.id);
+
+        if (editingTaskId === t.id) {
+          card.className = 'task-card';
+          var form = document.createElement('div');
+          form.className = 'edit-form';
+          var nameInput = document.createElement('input');
+          nameInput.type = 'text'; nameInput.value = t.name; nameInput.maxLength = 60;
+          var catSelect = document.createElement('select');
+          CATEGORY_ORDER.forEach(function(c) {
+            var opt = document.createElement('option');
+            opt.value = c; opt.textContent = CATEGORY_LABELS[c].replace(/^\S+\s/, '');
+            if (c === t.category) opt.selected = true;
+            catSelect.appendChild(opt);
+          });
+          var saveBtn = document.createElement('button');
+          saveBtn.textContent = 'Save';
+          saveBtn.onclick = function() { saveEditTask(t.id, nameInput.value, catSelect.value); };
+          form.appendChild(nameInput); form.appendChild(catSelect); form.appendChild(saveBtn);
+          card.appendChild(form);
+          sectionsEl.appendChild(card);
+          return;
+        }
+
+        var status = getStatus(selectedDate, t.id);
+        card.className = 'task-card' + (status === 'yes' ? ' done' : (status === 'no' ? ' skipped' : ''));
+
+        var choiceWrap = document.createElement('div');
+        choiceWrap.className = 'choice-btns';
+        var yesBtn = document.createElement('button');
+        yesBtn.className = 'choice-btn yes' + (status === 'yes' ? ' active' : '');
+        yesBtn.innerHTML = '&#10003;';
+        var noBtn = document.createElement('button');
+        noBtn.className = 'choice-btn no' + (status === 'no' ? ' active' : '');
+        noBtn.innerHTML = '&#10005;';
+        choiceWrap.appendChild(yesBtn); choiceWrap.appendChild(noBtn);
+
+        var body = document.createElement('div');
+        body.className = 'task-body';
+        var nameEl = document.createElement('p');
+        nameEl.className = 'task-name'; nameEl.textContent = t.name;
+        var metaEl = document.createElement('p');
+        metaEl.className = 'task-meta';
+        metaEl.textContent = status === 'yes' ? 'Done' : (status === 'no' ? 'Skipped' : 'Not done yet');
+        body.appendChild(nameEl); body.appendChild(metaEl);
+
+        var sideBtns = document.createElement('div');
+        sideBtns.className = 'task-side-btns';
+        var upBtn = document.createElement('button');
+        upBtn.className = 'mini-btn'; upBtn.innerHTML = '&#9650;';
+        upBtn.style.visibility = idxInCat === 0 ? 'hidden' : 'visible';
+        upBtn.onclick = function() { moveTask(t.id, -1); };
+        var downBtn = document.createElement('button');
+        downBtn.className = 'mini-btn'; downBtn.innerHTML = '&#9660;';
+        downBtn.style.visibility = idxInCat === tasksInCat.length - 1 ? 'hidden' : 'visible';
+        downBtn.onclick = function() { moveTask(t.id, 1); };
+        sideBtns.appendChild(upBtn); sideBtns.appendChild(downBtn);
+
+        var editBtn = document.createElement('button');
+        editBtn.className = 'icon-btn'; editBtn.innerHTML = '&#9998;';
+        editBtn.onclick = function() { startEditTask(t.id); };
+        var delBtn = document.createElement('button');
+        delBtn.className = 'icon-btn'; delBtn.innerHTML = '&#10005;';
+        delBtn.onclick = function() { deleteTask(t.id, card); };
+
+        yesBtn.onclick = function() { setTaskStatus(t, 'yes', card, yesBtn, noBtn); };
+        noBtn.onclick = function() { setTaskStatus(t, 'no', card, yesBtn, noBtn); };
+
+        card.appendChild(choiceWrap); card.appendChild(body); card.appendChild(sideBtns); card.appendChild(editBtn); card.appendChild(delBtn);
+        sectionsEl.appendChild(card);
+        card.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 260, easing: 'ease-out' });
+      });
+    });
+
+    updateHeroAndStats();
+  }
+
+  // ---- Content page ----
+  function computeUploadStreakAndTotal() {
+    var uploadDates = {};
+    state.content.videos.forEach(function(v) { if (v.status === 'uploaded' && v.uploadDate) uploadDates[v.uploadDate] = true; });
+    var total = state.content.videos.filter(function(v){return v.status==='uploaded';}).length;
+    var streak = 0, cursor = todayRealStr();
+    while (uploadDates[cursor]) { streak++; cursor = addDays(cursor, -1); }
+    return { streak: streak, total: total };
+  }
+
+  function renderVideos() {
+    var stats = computeUploadStreakAndTotal();
+    document.getElementById('upload-streak').textContent = stats.streak;
+    document.getElementById('upload-total').textContent = stats.total;
+
+    var list = document.getElementById('video-list');
+    list.innerHTML = '';
+    if (state.content.videos.length === 0) {
+      list.innerHTML = '<div class="empty-slot">No videos yet — add your first idea below.</div>';
+      return;
+    }
+    state.content.videos.slice().reverse().forEach(function(v) {
+      var card = document.createElement('div');
+      card.className = 'video-card';
+      var top = document.createElement('div');
+      top.className = 'video-card-top';
+      var titleWrap = document.createElement('div');
+      var titleEl = document.createElement('p');
+      titleEl.className = 'video-title'; titleEl.textContent = v.title;
+      var statusEl = document.createElement('span');
+      statusEl.className = 'video-status ' + v.status;
+      statusEl.textContent = v.status.charAt(0).toUpperCase() + v.status.slice(1);
+      titleWrap.appendChild(titleEl); titleWrap.appendChild(statusEl);
+      var delBtn = document.createElement('button');
+      delBtn.className = 'icon-btn'; delBtn.innerHTML = '&#10005;';
+      delBtn.onclick = function() {
+        state.content.videos = state.content.videos.filter(function(x) { return x.id !== v.id; });
+        saveState(); renderVideos();
+      };
+      top.appendChild(titleWrap); top.appendChild(delBtn);
+      card.appendChild(top);
+
+      if (v.thumbnailNote) {
+        var thumb = document.createElement('p');
+        thumb.className = 'video-thumb-note';
+        thumb.textContent = '🖼️ ' + v.thumbnailNote;
+        card.appendChild(thumb);
+      }
+
+      var scriptEl = document.createElement('div');
+      scriptEl.className = 'video-script';
+      scriptEl.textContent = v.script || '(no script written)';
+      card.appendChild(scriptEl);
+
+      var actions = document.createElement('div');
+      actions.className = 'video-actions';
+      var toggleBtn = document.createElement('button');
+      toggleBtn.textContent = 'View script';
+      toggleBtn.onclick = function() {
+        scriptEl.classList.toggle('show');
+        toggleBtn.textContent = scriptEl.classList.contains('show') ? 'Hide script' : 'View script';
+      };
+      var statusSelect = document.createElement('select');
+      ['idea','scripted','edited','uploaded'].forEach(function(s) {
+        var opt = document.createElement('option');
+        opt.value = s; opt.textContent = s.charAt(0).toUpperCase() + s.slice(1);
+        if (s === v.status) opt.selected = true;
+        statusSelect.appendChild(opt);
+      });
+      statusSelect.style.fontSize = '11.5px';
+      statusSelect.style.borderRadius = '8px';
+      statusSelect.style.border = '1px solid var(--border)';
+      statusSelect.style.background = 'var(--input-bg)';
+      statusSelect.style.color = 'var(--text)';
+      statusSelect.onchange = function() {
+        v.status = statusSelect.value;
+        if (v.status === 'uploaded' && !v.uploadDate) v.uploadDate = todayRealStr();
+        saveState(); renderVideos();
+      };
+      actions.appendChild(toggleBtn); actions.appendChild(statusSelect);
+      card.appendChild(actions);
+
+      list.appendChild(card);
+    });
+  }
+
+  function addVideo(title, status, thumbnailNote, script) {
+    var v = { id: 'v' + Date.now(), title: title, status: status, thumbnailNote: thumbnailNote, script: script, uploadDate: status === 'uploaded' ? todayRealStr() : null };
+    state.content.videos.push(v);
+    saveState(); renderVideos();
+  }
+
+  // ---- Study page ----
+  function renderSubjects() {
+    var list = document.getElementById('subject-list');
+    list.innerHTML = '';
+    SUBJECT_LIST.forEach(function(subj) {
+      var data = state.study.subjects[subj] || { chapters: [] };
+      var chapters = data.chapters || [];
+      var greenCount = chapters.filter(function(c) { return c.green; }).length;
+      var pct = chapters.length > 0 ? Math.round((greenCount / chapters.length) * 100) : 0;
+
+      var card = document.createElement('div');
+      card.className = 'subject-card';
+
+      var head = document.createElement('div');
+      head.className = 'subject-head';
+      head.innerHTML = '<div><div class="subject-name">' + subj + '</div><div class="subject-progress-bar" style="width:140px;"><div class="subject-progress-fill" style="width:' + pct + '%;"></div></div></div><span class="subject-pct">' + pct + '%</span>';
+      head.onclick = function() { openSubject = openSubject === subj ? null : subj; renderSubjects(); };
+      card.appendChild(head);
+
+      var bodyEl = document.createElement('div');
+      bodyEl.className = 'subject-body' + (openSubject === subj ? ' open' : '');
+
+      chapters.forEach(function(ch) {
+        var row = document.createElement('div');
+        row.className = 'chapter-row';
+        var nameEl = document.createElement('span');
+        nameEl.className = 'chapter-name'; nameEl.textContent = ch.name;
+        var dots = document.createElement('div');
+        dots.className = 'color-dots';
+        ['red','yellow','blue','green'].forEach(function(color) {
+          var dot = document.createElement('div');
+          dot.className = 'color-dot ' + color + (ch[color] ? ' on' : '');
+          dot.onclick = function() {
+            ch[color] = !ch[color];
+            saveState();
+            renderSubjects();
+          };
+          dots.appendChild(dot);
+        });
+        var delBtn = document.createElement('button');
+        delBtn.className = 'del-chapter'; delBtn.innerHTML = '&#10005;';
+        delBtn.onclick = function() {
+          data.chapters = data.chapters.filter(function(c) { return c.id !== ch.id; });
+          saveState(); renderSubjects();
+        };
+        row.appendChild(nameEl); row.appendChild(dots); row.appendChild(delBtn);
+        bodyEl.appendChild(row);
+      });
+
+      var addRow = document.createElement('div');
+      addRow.className = 'add-chapter-row';
+      var input = document.createElement('input');
+      input.type = 'text'; input.placeholder = 'Add chapter name';
+      var addBtn = document.createElement('button');
+      addBtn.textContent = 'Add';
+      addBtn.onclick = function() {
+        var val = input.value.trim();
+        if (!val) return;
+        data.chapters.push({ id: 'c' + Date.now() + Math.random().toString(36).slice(2,5), name: val, red: false, yellow: false, blue: false, green: false });
+        state.study.subjects[subj] = data;
+        input.value = '';
+        saveState(); renderSubjects();
+      };
+      addRow.appendChild(input); addRow.appendChild(addBtn);
+      bodyEl.appendChild(addRow);
+
+      card.appendChild(bodyEl);
+      list.appendChild(card);
+    });
+  }
+
+  // ---- Focus timer ----
+  var focusSeconds = 25 * 60, focusInterval = null, focusRunning = false;
+  function updateFocusDisplay() {
+    var m = Math.floor(focusSeconds / 60), s = focusSeconds % 60;
+    document.getElementById('focus-display').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  document.querySelectorAll('.focus-mode-row button').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.focus-mode-row button').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      clearInterval(focusInterval); focusRunning = false;
+      document.getElementById('focus-start-btn').textContent = 'Start';
+      focusSeconds = parseInt(btn.getAttribute('data-min')) * 60;
+      updateFocusDisplay();
+    });
+  });
+  document.getElementById('focus-start-btn').addEventListener('click', function() {
+    var btn = document.getElementById('focus-start-btn');
+    if (focusRunning) {
+      clearInterval(focusInterval); focusRunning = false; btn.textContent = 'Start';
+    } else {
+      focusRunning = true; btn.textContent = 'Pause';
+      focusInterval = setInterval(function() {
+        focusSeconds--;
+        if (focusSeconds <= 0) {
+          clearInterval(focusInterval); focusRunning = false;
+          btn.textContent = 'Start'; playBeep(); showToast('Focus session done!');
+          focusSeconds = 0;
+        }
+        updateFocusDisplay();
+      }, 1000);
+    }
+  });
+  document.getElementById('focus-reset-btn').addEventListener('click', function() {
+    clearInterval(focusInterval); focusRunning = false;
+    document.getElementById('focus-start-btn').textContent = 'Start';
+    var activeBtn = document.querySelector('.focus-mode-row button.active');
+    focusSeconds = parseInt(activeBtn.getAttribute('data-min')) * 60;
+    updateFocusDisplay();
+  });
+  updateFocusDisplay();
+
+  // ---- Tabs ----
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('page-' + btn.getAttribute('data-page')).classList.add('active');
+    });
+  });
+
+  // ---- Range toggle ----
+  document.querySelectorAll('#range-toggle button').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#range-toggle button').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      chartRange = btn.getAttribute('data-range');
+      renderChart();
+    });
+  });
+
+  // ---- Why banner ----
+  document.getElementById('why-banner').addEventListener('click', function() {
+    document.getElementById('why-edit').classList.add('show');
+  });
+  document.getElementById('why-save-btn').addEventListener('click', function() {
+    state.why = document.getElementById('why-input').value.trim();
+    saveState(); renderWhyBanner();
+    document.getElementById('why-edit').classList.remove('show');
+  });
+
+  // ---- Streak freeze ----
+  document.getElementById('freeze-btn').addEventListener('click', function() {
+    var key = currentWeekKey();
+    if (state.streakFreezes[key]) return;
+    state.streakFreezes[key] = selectedDate;
+    if (!state.dayLog[selectedDate]) state.dayLog[selectedDate] = {};
+    state.dayLog[selectedDate].__frozen__ = true;
+    saveState();
+    renderFreezeRow(); renderDayTabs(); updateHeroAndStats();
+    showToast('Freeze used — streak protected for today.');
+  });
+
+  // ---- Weekly goal ----
+  document.getElementById('goal-save-btn').addEventListener('click', function() {
+    var val = parseInt(document.getElementById('goal-input').value);
+    if (isNaN(val)) { showError('Enter a number between 0 and 100.'); return; }
+    showError('');
+    state.weekGoals[currentWeekKey()] = Math.max(0, Math.min(100, val));
+    saveState(); renderSummary();
+    showToast('Weekly goal set to ' + val + '%.');
+  });
+
+  // ---- Task add/reset ----
+  document.getElementById('add-btn').addEventListener('click', function() {
+    var input = document.getElementById('new-task-input');
+    var cat = document.getElementById('new-task-cat').value;
+    var val = input.value.trim();
+    if (!val) { showError('Type a task before adding it.'); return; }
+    showError(''); addTask(val, cat); input.value = '';
+  });
+  document.getElementById('new-task-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('add-btn').click(); });
+  document.getElementById('new-task-input').addEventListener('input', function() { showError(''); });
+  document.getElementById('reset-btn').addEventListener('click', function() { state.tasks = makeDefaultTasks(); saveState(); renderAll(); });
+
+  document.getElementById('save-reflection-btn').addEventListener('click', function() {
+    var key = currentWeekKey();
+    if (!state.weekReflections[key]) state.weekReflections[key] = { mood: '', text: '' };
+    state.weekReflections[key].text = document.getElementById('week-text').value;
+    saveState();
+    var note = document.getElementById('saved-note');
+    note.classList.add('show');
+    setTimeout(function() { note.classList.remove('show'); }, 2000);
+  });
+
+  document.getElementById('theme-btn').addEventListener('click', function() {
+    state.theme = state.theme === 'light' ? 'dark' : 'light';
+    applyTheme(); saveState();
+  });
+
+  document.getElementById('prev-week-btn').addEventListener('click', function() {
+    if (selectedWeekIndex <= 0) return;
+    selectedWeekIndex--; selectedDate = getWeekDates(selectedWeekIndex)[0];
+    renderWeekNav(); renderDayTabs(); renderMoodRow(); renderWeekReflectionUI(); renderAll();
+  });
+  document.getElementById('next-week-btn').addEventListener('click', function() {
+    selectedWeekIndex++; selectedDate = getWeekDates(selectedWeekIndex)[0];
+    renderWeekNav(); renderDayTabs(); renderMoodRow(); renderWeekReflectionUI(); renderAll();
+  });
+
+  // ---- Backup / restore ----
+  document.getElementById('export-btn').addEventListener('click', function() {
+    copyToClipboard(JSON.stringify(state));
+  });
+  document.getElementById('import-btn').addEventListener('click', function() {
+    var raw = document.getElementById('import-text').value.trim();
+    if (!raw) { showToast('Paste your exported data first.'); return; }
+    try {
+      var parsed = JSON.parse(raw);
+      state = Object.assign({ tasks: [], dayLog: {}, dayMood: {}, weekReflections: {}, theme: 'dark', why: '', weekGoals: {}, streakFreezes: {}, content: { videos: [] }, study: { subjects: makeDefaultSubjects() } }, parsed);
+      saveState();
+      applyTheme();
+      renderWhyBanner(); renderWeekReflectionUI(); renderWeekNav(); renderDayTabs(); renderMoodRow(); renderAll(); renderVideos(); renderSubjects();
+      showToast('Data restored.');
+    } catch (e) {
+      showToast('That did not look like valid exported data.');
+    }
+  });
+
+  // ---- Content page events ----
+  document.getElementById('add-video-btn').addEventListener('click', function() {
+    var title = document.getElementById('video-title-input').value.trim();
+    var status = document.getElementById('video-status-input').value;
+    var thumb = document.getElementById('video-thumb-input').value.trim();
+    var script = document.getElementById('video-script-input').value;
+    if (!title) { showToast('Give the video a title first.'); return; }
+    addVideo(title, status, thumb, script);
+    document.getElementById('video-title-input').value = '';
+    document.getElementById('video-thumb-input').value = '';
+    document.getElementById('video-script-input').value = '';
+    document.getElementById('video-status-input').value = 'idea';
+  });
+
+  var canvas = document.getElementById('confetti-canvas');
+  var ctx = canvas.getContext('2d');
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function launchConfetti() {
+    var colors = ['#3fa9f5', '#7c5cff', '#2fbf71', '#ffd166', '#ff6b6b'];
+    var particles = [];
+    for (var i = 0; i < 90; i++) {
+      particles.push({ x: canvas.width/2 + (Math.random()-0.5)*60, y: canvas.height*0.35, vx: (Math.random()-0.5)*8, vy: Math.random()*-8-4, size: Math.random()*6+4, color: colors[Math.floor(Math.random()*colors.length)], rotation: Math.random()*360, vr: (Math.random()-0.5)*12, gravity: 0.25+Math.random()*0.1 });
+    }
+    var start = performance.now();
+    function frame(now) {
+      var elapsed = now - start;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      var alive = false;
+      particles.forEach(function(p) {
+        p.vy += p.gravity; p.x += p.vx; p.y += p.vy; p.rotation += p.vr;
+        if (p.y < canvas.height + 20) alive = true;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rotation * Math.PI / 180);
+        ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, 1 - elapsed / 2600);
+        ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6); ctx.restore();
+      });
+      if (alive && elapsed < 2600) requestAnimationFrame(frame); else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  loadState();
+})();
+</script>
+</body>
+</html>
