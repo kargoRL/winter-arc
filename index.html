@@ -429,23 +429,7 @@
 
 <script>
 (function() {
-  if ( !window.storage) {
-      window.storage =  {
-        get: async function(key) {
-          var value =
-   localstorage.getitem(key);
-          return value === null  ?
-   null : { value: value };
-        },
-        set: async funtion(key,
-    value) {
-           localstorage.setitem(key,value) ;
-        return { value: value };
-     }  
- };
-}
-
- var STORAGE_KEY = 'winter-arc-v5';
+  var STORAGE_KEY = 'winter-arc-v5';
   var state = {
     tasks: [], dayLog: {}, dayMood: {}, weekReflections: {}, theme: 'dark',
     why: '', weekGoals: {}, streakFreezes: {},
